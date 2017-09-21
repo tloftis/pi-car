@@ -20,3 +20,9 @@ The motor driver is just a L293D that I've throw together with some wiring and a
 It's a bit of fun to let people fight over driving it, but if you have 2 browsers on it at once, it will freak out and that needs to be addressed still
 
 I also want to swap over to a nodejs controlled camera streaming capability
+
+## To Run
+
+In order to run the code, start the server (node server.js) and point it at the cars IP, then start the car (node car.js)
+
+I don't think anyone will be intrested in this, so unless asked otherwise I won't get more specific than that.
