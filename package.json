@@ -6,7 +6,6 @@
   "dependencies": {
     "express": "^4.15.4",
     "socket.io": "^1.7.4",
-    "wiring-pi": "^2.2.1",
     "wiringpi-node": "^2.4.4"
   },
   "devDependencies": {},
