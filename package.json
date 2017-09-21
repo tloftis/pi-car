@@ -1,0 +1,35 @@
+{
+  "name": "pi-car",
+  "version": "1.0.0",
+  "description": "a raspberry powered web controlled rc car written all in nodejs",
+  "main": "server.js",
+  "dependencies": {
+    "express": "^4.15.4",
+    "socket.io": "^1.7.4",
+    "wiring-pi": "^2.2.1",
+    "wiringpi-node": "^2.4.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "node server.js",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tloftis/pi-car.git"
+  },
+  "keywords": [
+    "nodejs",
+    "rc",
+    "car",
+    "web",
+    "wiringpi",
+    "raspberrypi"
+  ],
+  "author": "tim loftis",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tloftis/pi-car/issues"
+  },
+  "homepage": "https://github.com/tloftis/pi-car#readme"
+}
