@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+	<script src="/public/socket.io.js"></script>
+	<script src="/public/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="/public/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/public/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css">
+	<link rel="stylesheet" href="/public/font-awesome-4.7.0/css/font-awesome.min.css">
+
+	<body>
+		<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">
+			<img src="http://192.168.1.19:8081/" alt="Web Camera Feed" width="500" height="500" class="row" id="cameraFeed">
+			<div class="row">Use WASD to drive easily</div>
+			
+			<select class="btn btn-secondary row" onchange="changeResolution(this)">
+				<option value="500">500x500</option>
+				<option value="750">750x750</option>
+				<option value="1000">1000x1000</option>
+			</select>
+		</div>
+		
+		<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">
+			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">
+				<button class="btn btn-primary" onmousedown="shootL()" ontouchstart="shootL()">
+					<i class="fa-5x fa fa-crosshairs"></i>
+				</button>
+				
+				<button class="btn btn-primary" id="btnF">
+					<i class="fa-5x fa fa-arrow-up"></i>
+				</button>
+				
+				<button class="btn btn-primary" onmousedown="shootR()" ontouchstart="shootR()">
+					<i class="fa-5x fa fa-crosshairs"></i>
+				</button>
+			</div>
+			
+			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center" style="margin-top:10px;">
+				<button class="btn btn-primary" id="btnL">
+					<i class="fa fa-5x fa-arrow-left"></i>
+				</button>
+				
+				<button class="btn btn-primary" onmousedown="fuckemup()" ontouchstart="fuckemup()">
+					<i class="fa fa-5x fa-bullseye"></i>
+				</button>
+				
+				<button class="btn btn-primary" id="btnR">
+					<i class="fa fa-5x fa-arrow-right"></i>
+				</button>
+			</div>
+			
+			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center" style="margin-top:10px;">
+				<button class="btn btn-primary" onmousedown="missleL()" ontouchstart="missleL()">
+					<i class="fa fa-5x fa-rocket"></i>
+				</button>
+				
+				<button class="btn btn-primary" id="btnB">
+					<i class="fa-5x fa fa-arrow-down"></i>
+				</button>
+				
+				<button class="btn btn-primary" onmousedown="missleR()" ontouchstart="missleR()">
+					<i class="fa-5x fa fa-rocket"></i>
+				</button>
+			</div>
+		</div>
+	</body>
+	
+	<script type="text/javascript">		
+		'use strict';
+		
+		//var camFeed = document.getElementById('cameraFeed');
+		//camFeed.scr = 'http://' + window.location.hostname + ':8081/';
+		
+		//<img src="http://107.4.20.63:8081/" alt="Web Camera Feed" width="500" height="500" class="row">
+		
+		var socket = io('http://' + window.location.hostname + ':3000');
+		
+		socket.on('init', function (data) {
+			console.log(data);
+		});
+		
+		function changeResolution(elem){
+			camFeed.width = elem.value;
+			camFeed.height = elem.value;
+		}
+		
+		// This function creates a closure and puts a mousedown handler on the element specified in the "button" parameter.
+		function makeButtonIncrement(button, action, initialDelay, multiplier){
+			var holdTimer, changeValue, timerIsRunning = false, delay = initialDelay;
+			
+			changeValue = function(){
+				if(action){
+					action();
+				}
+				
+				holdTimer = setTimeout(changeValue, delay);
+				if(delay > 20) delay = delay * multiplier;
+				
+				if(!timerIsRunning){
+					// When the function is first called, it puts an onmouseup handler on the whole document 
+					// that stops the process when the mouse is released. This is important if the user moves
+					// the cursor off of the button.
+					document.onmouseup = function(){
+						clearTimeout(holdTimer);
+						document.onmouseup = null;
+						timerIsRunning = false;
+						delay = initialDelay;
+					}
+					
+					timerIsRunning = true;
+				}
+			}
+			
+			button.onmousedown = changeValue;
+		}
+  
+		document.onkeypress = function(evt) {
+			evt = evt || window.event;
+			var charCode = evt.keyCode || evt.which;
+			var charStr = String.fromCharCode(charCode);
+			
+			if(charStr === 'w'){
+				socket.emit('f', 1);
+			}
+			
+			if(charStr === 's'){
+				socket.emit('b', 1);
+			}
+			
+			if(charStr === 'a'){
+				socket.emit('l', 1);
+			}
+			
+			if(charStr === 'd'){
+				socket.emit('r', 1);
+			}
+		};
+		
+		function forward(){
+			socket.emit('f', 1);
+		}
+		
+		function back(){
+			socket.emit('b', 1);
+		}
+		
+		function left(){
+			socket.emit('l', 1);
+		}
+		
+		function right(){
+			socket.emit('r', 1);
+		}
+		
+		function shootR(){
+			socket.emit('shootR', 1);
+		}
+		
+		function shootL(){
+			socket.emit('shootL', 1);
+		}
+		
+		function missleR(){
+			socket.emit('missleR', 1);
+		}
+		
+		function missleL(){
+			socket.emit('missleL', 1);
+		}
+		
+		function fuckemup(){
+			shootL();
+			shootR();
+			
+			setTimeout(()=>{
+				missleL();
+				missleR();
+			}, 600);
+		}
+		
+		/*
+		makeButtonIncrement(fB, forward, 50, 0.7);
+		makeButtonIncrement(bB, back, 50, 0.7);
+		makeButtonIncrement(lB, left, 50, 0.7);
+		makeButtonIncrement(rB, right, 50, 0.7);
+		*/
+		function setupButton(elem, action, speed){
+			var	run = false,
+				timeout = ()=>{
+					if(!run){ return; }
+					
+					action();
+					setTimeout(timeout, speed);
+				};
+			
+			elem.addEventListener('touchstart', (event)=>{
+				if((event || {}).preventDefault) event.preventDefault();
+				run = true;
+				timeout();
+			}, false);
+			
+			elem.addEventListener('mousedown', (event)=>{
+				if((event || {}).preventDefault) event.preventDefault();
+				run = true;
+				timeout();
+			}, false);
+			
+			document.addEventListener('touchend', (event)=>{
+				if((event || {}).preventDefault) event.preventDefault();
+				run = false;
+			}, false);
+			
+			document.addEventListener('touchcancle', (event)=>{
+				if((event || {}).preventDefault) event.preventDefault();
+				run = false;
+			}, false);
+			
+			document.addEventListener('mouseup', (event)=>{
+				if((event || {}).preventDefault) event.preventDefault();
+				run = false;
+			}, false);
+		}
+		
+		window.addEventListener('load',function(){
+			setTimeout(()=>{
+				var fB = document.getElementById('btnF'),
+					bB = document.getElementById('btnB'),
+					rB = document.getElementById('btnR'),
+					lB = document.getElementById('btnL');
+			
+				setupButton(fB, forward, 50);
+				setupButton(bB, back, 50);
+				setupButton(lB, left, 50);
+				setupButton(rB, right, 50);
+			}, 250)
+		});
+	</script>
+</html>

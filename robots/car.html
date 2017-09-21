@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+	<script src="/public/socket.io.js"></script>
+	<script src="/public/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+	<script src="/public/virtualjoystick.js/virtualjoystick.js"></script>
+
+	<link rel="stylesheet" href="/public/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/public/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css">
+	<link rel="stylesheet" href="/public/font-awesome-4.7.0/css/font-awesome.min.css">
+
+	<body id="container" style="height:100vh; width:100vw">
+		<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">
+			<img scr="http://192.168.1.19:8081/" alt="Web Camera Feed" width="500" height="500" class="row" id="cameraFeed">
+			<div class="row">Use WASD to drive easily</div>
+			
+			<select class="btn btn-secondary row" onchange="changeResolution(this)">
+				<option value="500">500x500</option>
+				<option value="750">750x750</option>
+				<option value="1000">1000x1000</option>
+			</select>
+		</div>
+	</body>
+	
+	<script type="text/javascript">		
+		'use strict';
+		
+		var camFeed = document.getElementById('cameraFeed');
+		camFeed.src = 'http://' + window.location.hostname + ':8081/';
+		
+		var socket = io('http://' + window.location.hostname + ':3000');
+		
+		socket.on('init', function (data) {
+			console.log(data);
+		});
+		
+		function changeResolution(elem){
+			camFeed.width = elem.value;
+			camFeed.height = elem.value;
+		}
+  
+		var fT = false,
+		    bT = false,
+		    rT = false,
+		    lT = false, 
+			speed = 1;
+  
+		var fTc = false,
+		    bTc = false,
+		    rTc = false,
+		    lTc = false;
+			
+		var size = 100;
+
+		document.onkeydown = function(evt) {
+			evt = evt || window.event;
+			var charCode = evt.keyCode || evt.which;
+			var charStr = String.fromCharCode(charCode).toLowerCase();
+			
+			if(charStr === 'w'){
+				fTc = true;
+				speed = 1
+			}
+			
+			if(charStr === 's'){
+				bTc = true;
+				speed = 1
+			}
+			
+			if(charStr === 'a'){
+				lTc = true;
+				speed = 1
+			}
+			
+			if(charStr === 'd'){
+				rTc = true;
+				speed = 1
+			}
+		};
+
+		document.onkeyup = function(evt) {
+			evt = evt || window.event;
+			var charCode = evt.keyCode || evt.which;
+			var charStr = String.fromCharCode(charCode).toLowerCase();
+			
+			if(charStr === 'w'){
+				fTc = false;
+			}
+
+			if(charStr === 's'){
+				bTc = false;
+			}
+
+			if(charStr === 'a'){
+				lTc = false;
+			}
+
+			if(charStr === 'd'){
+				rTc = false;
+			}
+		};
+		
+		console.log("touchscreen is", VirtualJoystick.touchScreenAvailable() ? "available" : "not available");
+
+		var joystick	= new VirtualJoystick({
+			container	: document.getElementById('container'),
+			mouseSupport	: true,
+			limitStickTravel: true,
+			stickRadius	: size
+		});
+		
+		joystick.addEventListener('touchStart', function(){
+			console.log('down')
+		})
+		joystick.addEventListener('touchEnd', function(){
+			console.log('up')
+		})
+		
+		setInterval(function(){
+			if(joystick.up()){
+				fT = true;
+				speed = joystick.deltaY()/-size;
+			} else {
+				fT = false;
+			}
+
+			if(joystick.down()){
+				bT = true;
+				speed = joystick.deltaY()/size;
+			} else {
+				bT = false;
+			}
+
+			if(joystick.left()){
+				lT = true;
+			} else {
+				lT = false;
+			}
+
+			if(joystick.right()){
+				rT = true;
+			} else {
+				rT = false;
+			}
+		}, 1/30 * 1000);
+			
+		setInterval(()=>{
+			var values = [(fT || fTc), (bT || bTc), (lT || lTc), (rT || rTc), speed];
+			console.log(values);
+			socket.emit('keys', values);
+		}, 50);
+	</script>
+</html>
