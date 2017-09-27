@@ -3,10 +3,10 @@ var app = express();
 var path = require('path');
 
 //Real
-var motor = require('./Motor.js');
+var motor = require('../Motor.js');
 
 //Emulation
-//var motor = require('./TestMotor.js');
+//var motor = require('../TestMotor.js');
 
 
 var motorOne = new motor({enablePin: 5, bPin: 22, fPin: 27});
