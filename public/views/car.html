@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <script src="/public/libs/socket.io.js"></script>
+    <script src="/public/libs/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+    <script src="/public/libs/virtualjoystick.js/virtualjoystick.js"></script>
+
+    <link rel="stylesheet" href="/public/libs/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/public/libs/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/public/libs/font-awesome-4.7.0/css/font-awesome.min.css">
+
+    <body id="container" style="height:100vh; width:100vw">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">
+            <img scr="http://192.168.1.19:8081/" alt="Web Camera Feed" width="500" height="500" class="row" id="cameraFeed">
+            <div class="row">Use WASD to drive easily</div>
+			<div id="queue"></div>
+
+            <select class="btn btn-secondary row" onchange="changeResolution(this)">
+                <option value="500">500x500</option>
+                <option value="750">750x750</option>
+                <option value="1000">1000x1000</option>
+            </select>
+        
+			<div id="chat"></div>
+        </div>
+    </body>
+	
+    <script src="/public/controllers/car.js"></script>
+</html>
