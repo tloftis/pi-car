@@ -44,16 +44,20 @@ function updateQueue(){
 	});
 }
 
+function removeRef(item, array){
+	return (array || []).some((currentItem, index)=>{
+		if(item === currentItem){
+			array.splice(index, 1);
+			return true;
+		}
+	});
+}
+
 io.on('connection', function (socket) {
 	socket.emit('init', 'Connected to bot server!');
 	
 	socket.on('disconnect', function () {
-		sockets.some((curSocket, index)=>{
-			if(socket === curSocket){
-				sockets.splice(index, 1);
-				return true;
-			}
-		});
+		removeRef(socket, sockets);
 		
 		if(socket === controllerSocket){
 			nextPerson (sockets[0]);
@@ -64,6 +68,15 @@ io.on('connection', function (socket) {
 	
 	socket.on('message', (msg)=>{
 		setMessageAll(msg);
+	});
+	
+	socket.on('giveUp', (msg)=>{
+		if(socket === controllerSocket){
+			removeRef(controllerSocket, sockets);
+			sockets.push(controllerSocket);
+			nextPerson (sockets[0]);
+			updateQueue();
+		}
 	});
 		
 	sockets.push(socket);
