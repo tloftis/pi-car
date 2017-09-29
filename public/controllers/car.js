@@ -1,32 +1,32 @@
 'use strict';
 
-var messages = [],
+let messages = [],
 	queueVal;
 
-var giveSpotElm = document.getElementById('giveSpot'),
+let giveSpotElm = document.getElementById('giveSpot'),
 	queueElm = document.getElementById('queue'),
 	camFeed = document.getElementById('cameraFeed'),
 	socket = io('http://' + window.location.hostname + ':3000');
 
-var fT = false,
+let fT = false,
 	bT = false,
 	rT = false,
 	lT = false, 
 	speed = 1;
 
-var fTc = false,
+let fTc = false,
 	bTc = false,
 	rTc = false,
 	lTc = false;
 
-var fTj = false,
+let fTj = false,
 	bTj = false,
 	rTj = false,
 	lTj = false;
 	
-var size = 150;
+let size = 150;
 
-var joystick = new VirtualJoystick({
+let joystick = new VirtualJoystick({
 	container: document.getElementById('container'),
 	mouseSupport: true,
 	limitStickTravel: true,
@@ -68,7 +68,7 @@ socket.on('init', function (data) {
 document.onkeydown = function(evt) {
 	evt = evt || window.event;
 	
-	var charCode = evt.keyCode || evt.which,
+	let charCode = evt.keyCode || evt.which,
 		charStr = String.fromCharCode(charCode).toLowerCase();
 	
 	if(charStr === 'w'){
@@ -94,8 +94,9 @@ document.onkeydown = function(evt) {
 
 document.onkeyup = function(evt) {
 	evt = evt || window.event;
-	var charCode = evt.keyCode || evt.which;
-	var charStr = String.fromCharCode(charCode).toLowerCase();
+	
+	let charCode = evt.keyCode || evt.which,
+		charStr = String.fromCharCode(charCode).toLowerCase();
 	
 	if(charStr === 'w'){
 		fTc = false;
@@ -143,9 +144,7 @@ setInterval(function(){
 }, 1/30 * 1000);
 
 window.addEventListener('load',function(){
-	var gamepad;
-	queueElm = document.getElementById('queue');
-	updateQute(queueVal);
+	let gamepad;
 	
 	window.addEventListener("gamepadconnected", function() {
 		gamepad = navigator.getGamepads().pop();
@@ -187,6 +186,6 @@ window.addEventListener('load',function(){
 });
 
 setInterval(()=>{
-	var values = [(fT || fTc || fTj), (bT || bTc || bTj), (lT || lTc || lTj), (rT || rTc || rTj), speed];
+	let values = [(fT || fTc || fTj), (bT || bTc || bTj), (lT || lTc || lTj), (rT || rTc || rTj), speed];
 	socket.emit('keys', values);
 }, 50);
