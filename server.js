@@ -20,6 +20,10 @@ var sockets = [];
 var controllerSocket;
 
 function nextPerson (socket){
+	if(controllerSocket){
+		controllerSocket.off('keys');
+	}
+	
 	if (socket) {
 		controllerSocket = socket;
 		
