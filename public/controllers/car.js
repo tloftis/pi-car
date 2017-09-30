@@ -33,7 +33,7 @@ let size = 150;
 
 let joystick = new VirtualJoystick({
 	container: document.getElementById('container'),
-	mouseSupport: true,
+	mouseSupport: false,
 	limitStickTravel: true,
 	stickRadius: size
 });
@@ -60,7 +60,7 @@ function addComment (username, message){
 		comments.shift();
 	}
 
-	var comment = document.createElement("pre");
+	var comment = document.createElement('pre');
 	comment.innerHTML = '<strong>' + username + '</strong>' + ' : ' + message;
 	commentField.append(comment);
 
@@ -69,15 +69,10 @@ function addComment (username, message){
 
 function sendMsg(){
 	socket.emit('message', { username: 'test', message: msgInput.value });
+	msgInput.value = '';
 }
 
 camFeed.src = 'http://' + window.location.hostname + ':8081/';
-
-if(window.innerHeight/window.innerWidth > 1){
-	camFeed.style.width = "100%";
-} else {
-	camFeed.style.height = "100%";
-}
 
 socket.on('msg', function(data) {
 	addComment(data.username, data.message);
@@ -172,11 +167,11 @@ setInterval(function(){
 window.addEventListener('load',function(){
 	let gamepad;
 	
-	window.addEventListener("gamepadconnected", function() {
+	window.addEventListener('gamepadconnected', function() {
 		gamepad = navigator.getGamepads().pop();
 	});
 
-	window.addEventListener("gamepaddisconnected", function() {
+	window.addEventListener('gamepaddisconnected', function() {
 		gamepad = undefined;
 	});
 	

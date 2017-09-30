@@ -9,34 +9,37 @@
     <link rel="stylesheet" href="/public/libs/font-awesome-4.7.0/css/font-awesome.min.css">
 
     <body>
-        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 row" style="height:80vh">
-			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center" id="container" style="height:80vh">
-				<img scr="http://192.168.1.19:8081/" alt="Web Camera Feed" id="cameraFeed" style="text-align:center; align-content: center; vertical-align: middle;">
-			</div>
-        </div>
+		<div class="col-xl-1 col-lg-1 col-md-1 col-sm-1 col-xs-1 text-center"></div>
 		
-		<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center row">
-			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center row">
-				<div id="queue"></div>
+		<div class="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-xs-10 text-center" id="container">
+			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center" id="container">
+				<img scr="http://192.168.1.19:8081/" alt="Web Camera Feed" id="cameraFeed" style="text-align:center; align-content: center; vertical-align: middle; max-width: 100%; height: 65vh">
 			</div>
 			
-			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center row" id="giveSpot">
-				<button class="btn btn-primary" onmousedown="giveSpot()" ontouchstart="giveSpot()">
-					<i class="fa-2x fa fa-sign-out ">Give Up Control</i>
-				</button>
-			</div>
-			
-			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 row text-center">
-				<pre style="height:18vh; margin-top: 1%; background-color: #1b6d85; border: silver" id="chat"></pre>
+			<div class="text-center row" style="text-align:center; align-content: center; vertical-align: middle; height:35vh;">
+				<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center row">
+					<div id="queue"></div>
+				</div>
+				
+				<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center row" id="giveSpot">
+					<button class="btn btn-primary" onmousedown="giveSpot()" ontouchstart="giveSpot()">
+						<i class="fa-2x fa fa-sign-out ">Give Up Control</i>
+					</button>
+				</div>
+				
+				<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 row text-center">
+					<pre style="background-color: #1b6d85; border: silver; height:20vh;" id="chat"></pre>
 
-				<div class="row" style="bottom: 10px;">
-					<input type="text" class="form-control pull-left" id="msgInput">
-					
-					<button class="btn btn-warning text-center" onmousedown="sendMsg()" 
-						ontouchstart="sendMsg()" style="margin-top: 5px;">Send Message</button>
+					<div class="row text-center" style="bottom: 10px;">
+						<input type="text" class="form-control" id="msgInput" style="">
+						
+						<button class="btn btn-warning text-center" onmousedown="sendMsg()" style="margin-top: 5px;">Send Message</button>
+					</div>
 				</div>
 			</div>
-		</div>
+		</div
+		
+		<div class="col-xl-1 col-lg-1 col-md-1 col-sm-1 col-xs-1 text-center"></div>
     </body>
 	
     <script src="/public/controllers/car.js"></script>
