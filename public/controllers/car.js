@@ -5,9 +5,14 @@ let messages = [],
 
 let giveSpotElm = document.getElementById('giveSpot'),
 	queueElm = document.getElementById('queue'),
+	msgInput = document.getElementById('msgInput'),
 	camFeed = document.getElementById('cameraFeed'),
 	socket = io('http://' + window.location.hostname + ':3000');
 
+let comments = [],
+	maxComments = 10,
+	commentField = document.getElementById('chat');
+	
 let fT = false,
 	bT = false,
 	rT = false,
@@ -48,6 +53,23 @@ function updateQute (data) {
 function giveSpot(elem){
 	socket.emit('giveUp', '');
 }
+ 
+function addComment (username, message){
+	if(comments.length >= maxComments){
+		comments[0].parentNode.removeChild(comments[0]);
+		comments.shift();
+	}
+
+	var comment = document.createElement("pre");
+	comment.innerHTML = '<strong>' + username + '</strong>' + ' : ' + message;
+	commentField.append(comment);
+
+	comments.push(comment);
+};
+
+function sendMsg(){
+	socket.emit('message', { username: 'test', message: msgInput.value });
+}
 
 camFeed.src = 'http://' + window.location.hostname + ':8081/';
 
@@ -56,6 +78,10 @@ if(window.innerHeight/window.innerWidth > 1){
 } else {
 	camFeed.style.height = "100%";
 }
+
+socket.on('msg', function(data) {
+	addComment(data.username, data.message);
+});
 
 socket.on('queue', (data)=>{
 	updateQute(data);

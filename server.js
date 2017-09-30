@@ -34,7 +34,7 @@ function nextPerson (socket){
 
 function setMessageAll(msg){
 	sockets.forEach(socket=>{
-		socket.emit('msg', msg || '');
+		socket.emit('msg', msg || {});
 	});
 }
 

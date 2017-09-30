@@ -9,8 +9,10 @@
     <link rel="stylesheet" href="/public/libs/font-awesome-4.7.0/css/font-awesome.min.css">
 
     <body>
-        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center row" style="height:80vh; width:100vw" id="container" style="display: none; vertical-align: middle;">
-			<img scr="http://192.168.1.19:8081/" alt="Web Camera Feed" id="cameraFeed" style="text-align:center; align-content: center; vertical-align: middle;">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 row" style="height:80vh">
+			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center" id="container" style="height:80vh">
+				<img scr="http://192.168.1.19:8081/" alt="Web Camera Feed" id="cameraFeed" style="text-align:center; align-content: center; vertical-align: middle;">
+			</div>
         </div>
 		
 		<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center row">
@@ -24,8 +26,15 @@
 				</button>
 			</div>
 			
-			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center row">
-				<div id="chat"></div>
+			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 row text-center">
+				<pre style="height:18vh; margin-top: 1%; background-color: #1b6d85; border: silver" id="chat"></pre>
+
+				<div class="row" style="bottom: 10px;">
+					<input type="text" class="form-control pull-left" id="msgInput">
+					
+					<button class="btn btn-warning text-center" onmousedown="sendMsg()" 
+						ontouchstart="sendMsg()" style="margin-top: 5px;">Send Message</button>
+				</div>
 			</div>
 		</div>
     </body>
