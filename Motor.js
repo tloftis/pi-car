@@ -80,6 +80,8 @@ Motor.prototype.stop = function(key){
     var _this = this;
     _this._direct = {forward:0,backward:0};
     g.digitalWrite(_this.enablePin, 0);
+    g.softPwmWrite(_this.fPin, 0);
+    g.softPwmWrite(_this.bPin, 0);
 };
 
 Motor.prototype.getDir = function(){

@@ -10,7 +10,7 @@ var motor = require('../Motor.js');
 
 
 var motorOne = new motor({enablePin: 5, bPin: 22, fPin: 27});
-var motorTwo = new motor({enablePin: 5, bPin: 17, fPin: 4});
+var motorTwo = new motor({enablePin: 5, bPin: 17, fPin: 10});
 
 var server = require('http').Server(app),
     io = require('socket.io')(server);

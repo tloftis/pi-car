@@ -67,6 +67,14 @@ function addComment (username, message){
 	comments.push(comment);
 };
 
+msgInput.onkeydown = function submitMessage(evt) {
+	evt = evt || window.event;
+
+    if(evt.keyCode == 13) {
+        sendMsg();        
+    }
+}
+
 function sendMsg(){
 	socket.emit('message', { username: 'test', message: msgInput.value });
 	msgInput.value = '';
